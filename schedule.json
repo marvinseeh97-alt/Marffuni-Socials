@@ -7,7 +7,7 @@
             "dateRange": "14.09. – 20.09.2026",
             "days": [
                
-                { "day": "Freitag", "date": "2026-09-18", "game": "Fortnite 2v2 Realistics", "time": "21:30 Uhr", "status": "confirmed", "label": "Bestätigt" },
+                
                 { "day": "Samstag", "date": "2026-09-19", "game": "In Planung", "time": "21:00 Uhr", "status": "Geplant", "label": "Geplant" },
                 { "day": "Sonntag", "date": "2026-09-20", "game": "In Planung", "time": "18:00 Uhr", "status": "Geplant", "label": "Geplant" }
             ]

@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marffuni — Creator & Streamer</title>
+    <!-- FontAwesome für Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #09090b;
+            --surface: #121216;
+            --surface-hover: #1c1c24;
+            --border: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.2);
+            --text-main: #f4f4f5;
+            --text-muted: #a1a1aa;
+            
+            --color-live: #22c55e;
+            --color-scheduled: #38bdf8;
+            --color-offday: #a855f7;
+            --color-cancelled: #ef4444;
+            
+            --glow-subtle: 0 0 20px rgba(255, 255, 255, 0.03);
+            --glow-green: 0 0 15px rgba(34, 197, 94, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 900px;
+            width: 90%;
+            margin: 0 auto;
+            padding: 35px 0 20px 0;
+        }
+
+        .header-title {
+            font-size: 19px;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--color-live);
+            background: rgba(34, 197, 94, 0.06);
+            padding: 7px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(34, 197, 94, 0.25);
+            box-shadow: var(--glow-green);
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--color-live);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--color-live);
+        }
+
+        main {
+            flex: 1;
+            max-width: 900px;
+            width: 90%;
+            margin: 0 auto 40px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .profile-section {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--glow-subtle);
+        }
+
+        .avatar {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid var(--border);
+        }
+
+        .profile-info h1 {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            margin-bottom: 2px;
+        }
+
+        .profile-info p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--glow-subtle);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0;
+        }
+
+        .card h2 i {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .schedule-date-range {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .socials-card h2 {
+            margin-bottom: 22px;
+        }
+
+        .socials-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media(max-width: 650px) {
+            header { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .socials-grid { grid-template-columns: 1fr; }
+        }
+
+        .link-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .link-item span { display: flex; align-items: center; gap: 12px; }
+        .link-item i { font-size: 16px; color: var(--text-muted); }
+        .link-item:hover { background: rgba(255, 255, 255, 0.05); border-color: var(--border-hover); transform: translateY(-2px); }
+        .link-item.disabled { opacity: 0.4; pointer-events: none; }
+
+        .schedule-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-height: 250px;
+            transition: opacity 0.2s ease;
+        }
+
+        .schedule-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+        }
+
+        .schedule-day {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .schedule-game { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+        .schedule-time { font-size: 13px; font-weight: 500; color: var(--text-main); text-align: right; }
+
+        .schedule-item.confirmed-row { background: rgba(34, 197, 94, 0.08); border-color: rgba(34, 197, 94, 0.25); }
+        .schedule-item.confirmed-row .schedule-game { color: #86efac !important; }
+
+        .schedule-item.scheduled-row { background: rgba(56, 189, 248, 0.08); border-color: rgba(56, 189, 248, 0.25); }
+        .schedule-item.scheduled-row .schedule-game { color: #7dd3fc !important; }
+
+        .schedule-item.offday-row { background: rgba(168, 85, 247, 0.08); border-color: rgba(168, 85, 247, 0.25); }
+        .schedule-item.offday-row .schedule-game { color: #d8b4fe !important; }
+
+        .schedule-item.cancelled-row { background: rgba(239, 68, 68, 0.08); border-color: rgba(239, 68, 68, 0.25); }
+        .schedule-item.cancelled-row .schedule-day,
+        .schedule-item.cancelled-row .schedule-game,
+        .schedule-item.cancelled-row .schedule-time {
+            color: var(--color-cancelled) !important;
+            text-decoration: line-through;
+            opacity: 0.85;
+        }
+
+        .schedule-item.past-row { opacity: 0.35 !important; }
+        .schedule-item.past-row .schedule-day,
+        .schedule-item.past-row .schedule-game,
+        .schedule-item.past-row .schedule-time { text-decoration: line-through; }
+
+        .status-tag { font-size: 11px; padding: 2px 8px; border-radius: 6px; font-weight: 500; }
+        .status-tag.scheduled { background: rgba(56, 189, 248, 0.15); color: var(--color-scheduled); border: 1px solid rgba(56, 189, 248, 0.3); }
+        .status-tag.confirmed { background: rgba(34, 197, 94, 0.15); color: var(--color-live); border: 1px solid rgba(34, 197, 94, 0.3); }
+        .status-tag.offday { background: rgba(168, 85, 247, 0.15); color: var(--color-offday); border: 1px solid rgba(168, 85, 247, 0.3); }
+        .status-tag.cancelled { background: rgba(239, 68, 68, 0.15); color: var(--color-cancelled); border: 1px solid rgba(239, 68, 68, 0.3); }
+
+        .pagination-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .pagination-buttons { display: flex; gap: 8px; }
+
+        .page-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            padding: 6px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .page-btn:hover:not(:disabled) { background: rgba(255, 255, 255, 0.08); border-color: var(--border-hover); }
+        .page-btn:disabled { opacity: 0.2; cursor: not-allowed; }
+
+        footer {
+            max-width: 900px;
+            width: 90%;
+            margin: 0 auto;
+            padding: 30px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-title">Marffuni Socials & Plan</div>
+        <div class="status-badge" id="nextStreamTicker">
+            <div class="dot"></div> Nächster Stream: Lädt...
+        </div>
+    </header>
+
+    <main>
+        <div class="profile-section">
+            <img src="avatar.png" alt="Avatar" class="avatar" onerror="this.src='https://via.placeholder.com/64'">
+            <div class="profile-info">
+                <h1>Marffuni</h1>
+                <p>Content Creator & Streamer. Willkommen auf meiner offiziellen Seite.</p>
+            </div>
+        </div>
+
+        <div class="card socials-card">
+            <h2><i class="fa-solid fa-link"></i> Socials</h2>
+            <div class="socials-grid">
+                <a href="https://tiktok.com/" target="_blank" class="link-item">
+                    <span><i class="fab fa-tiktok"></i> TikTok</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 11px; opacity: 0.4;"></i>
+                </a>
+                <a href="https://discord.gg/gyXbYDW2e" target="_blank" class="link-item">
+                    <span><i class="fab fa-discord"></i> Discord</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 11px; opacity: 0.4;"></i>
+                </a>
+                <a href="https://youtube.com/" target="_blank" class="link-item">
+                    <span><i class="fab fa-youtube"></i> YouTube</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 11px; opacity: 0.4;"></i>
+                </a>
+                <a href="https://twitch.tv/marffuni" target="_blank" class="link-item">
+                    <span><i class="fab fa-twitch"></i> Twitch</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 11px; opacity: 0.4;"></i>
+                </a>
+                <div class="link-item disabled"><span><i class="fa-solid fa-clock"></i> Kommt noch</span></div>
+                <div class="link-item disabled"><span><i class="fa-solid fa-clock"></i> Kommt noch</span></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fa-solid fa-calendar"></i> Streaming Plan</h2>
+                <div class="schedule-date-range" id="dateRangeDisplay">Laden...</div>
+            </div>
+            
+            <div class="schedule-list" id="scheduleContainer"></div>
+            
+            <div class="pagination-bar">
+                <span id="pageIndicator">Woche 1 von 2</span>
+                <div class="pagination-buttons">
+                    <button class="page-btn" id="prevBtn" onclick="changeWeek(-1)"><i class="fa-solid fa-arrow-left"></i> Vorherige Woche</button>
+                    <button class="page-btn" id="nextBtn" onclick="changeWeek(1)">Nächste Woche <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        &copy; 2026 Marffuni. Alle Rechte vorbehalten.
+    </footer>
+
+<script>
+        let weeksData = [];
+        let currentWeekIndex = 0;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        async function loadSchedule() {
+            try {
+                const response = await fetch('schedule.json');
+                const data = await response.json();
+                
+                weeksData = data.weeks.map(week => ({
+                    ...week,
+                    startDate: new Date(week.startDate),
+                    endDate: new Date(week.endDate),
+                    days: week.days.map(day => ({
+                        ...day,
+                        dateObj: new Date(day.date)
+                    }))
+                }));
+
+                detectCurrentWeek();
+                updateTicker();
+                renderWeek();
+            } catch (error) {
+                console.error("Fehler beim Laden der schedule.json:", error);
+                document.getElementById('scheduleContainer').innerHTML = '<p style="color: var(--color-cancelled); text-align:center;">Fehler beim Laden der JSON-Daten (CORS-Hinweis beachten!).</p>';
+            }
+        }
+
+        function detectCurrentWeek() {
+            const foundIndex = weeksData.findIndex(w => today >= w.startDate && today <= w.endDate);
+            if (foundIndex !== -1) {
+                currentWeekIndex = foundIndex;
+            } else if (today > weeksData[weeksData.length - 1].endDate) {
+                currentWeekIndex = weeksData.length - 1;
+            } else {
+                currentWeekIndex = 0;
+            }
+        }
+
+        // NEU: Sucht NUR nach BESTÄTIGTEN Streams für den Ticker oben rechts!
+        function updateTicker() {
+            let nextConfirmed = null;
+
+            for (let i = currentWeekIndex; i < weeksData.length; i++) {
+                const found = weeksData[i].days.find(d => {
+                    const s = (d.status || '').toLowerCase();
+                    // Zählt nur, wenn es AUSDRÜCKLICH als bestätigt markiert ist
+                    const isConfirmed = s.includes('conf') || s.includes('bestätigt');
+                    return isConfirmed && d.dateObj >= today;
+                });
+                if (found) {
+                    nextConfirmed = found;
+                    break;
+                }
+            }
+
+            const tickerEl = document.getElementById('nextStreamTicker');
+            if (nextConfirmed) {
+                // Wenn ein Stream bestätigt ist, zeige Uhrzeit und Wochentag
+                tickerEl.innerHTML = `<div class="dot" style="background-color: var(--color-live); box-shadow: 0 0 8px var(--color-live);"></div> Nächster Stream: ${nextConfirmed.time}, ${nextConfirmed.day}`;
+            } else {
+                // Wenn noch nichts bestätigt ist, zeige einen entspannten Text (mit neutralem Punkt)
+                tickerEl.innerHTML = `<div class="dot" style="background-color: var(--text-muted); box-shadow: none;"></div> Nächster Stream: In Planung`;
+            }
+        }
+
+        function renderWeek() {
+            if (weeksData.length === 0) return;
+            const container = document.getElementById('scheduleContainer');
+            container.style.opacity = '0';
+
+            setTimeout(() => {
+                container.innerHTML = '';
+                const currentWeek = weeksData[currentWeekIndex];
+                document.getElementById('dateRangeDisplay').innerText = currentWeek.dateRange;
+
+                currentWeek.days.forEach(item => {
+                    const rawStatus = (item.status || '').toLowerCase();
+                    let rowClass = '';
+                    let tagClass = 'tbd';
+
+                    if (rawStatus.includes('conf') || rawStatus.includes('bestätigt')) {
+                        rowClass = 'confirmed-row';
+                        tagClass = 'confirmed';
+                    } else if (rawStatus.includes('sched') || rawStatus.includes('geplant')) {
+                        rowClass = 'scheduled-row';
+                        tagClass = 'scheduled';
+                    } else if (rawStatus.includes('off') || rawStatus.includes('ruhe') || rawStatus.includes('pause')) {
+                        rowClass = 'offday-row';
+                        tagClass = 'offday';
+                    } else if (rawStatus.includes('canc') || rawStatus.includes('entf') || rawStatus.includes('absag')) {
+                        rowClass = 'cancelled-row';
+                        tagClass = 'cancelled';
+                    } else {
+                        rowClass = 'neutral-row';
+                        tagClass = 'tbd';
+                    }
+
+                    if (item.dateObj < today) {
+                        rowClass += ' past-row';
+                    }
+
+                    container.innerHTML += `
+                        <div class="schedule-item ${rowClass}">
+                            <div>
+                                <div class="schedule-day">
+                                    ${item.day} 
+                                    <span class="status-tag ${tagClass}">${item.label || 'Offen'}</span>
+                                </div>
+                                <div class="schedule-game">${item.game}</div>
+                            </div>
+                            <div class="schedule-time">${item.time}</div>
+                        </div>
+                    `;
+                });
+
+                document.getElementById('pageIndicator').innerText = `Woche ${currentWeek.week} von ${weeksData.length}`;
+                document.getElementById('prevBtn').disabled = (currentWeekIndex === 0);
+                document.getElementById('nextBtn').disabled = (currentWeekIndex >= weeksData.length - 1);
+
+                container.style.opacity = '1';
+            }, 150);
+        }
+
+        function changeWeek(direction) {
+            currentWeekIndex += direction;
+            if (currentWeekIndex < 0) currentWeekIndex = 0;
+            if (currentWeekIndex >= weeksData.length) currentWeekIndex = weeksData.length - 1;
+            renderWeek();
+        }
+
+        loadSchedule();
+
+  // Wir laden die schedule.json aus demselben Ordner
+  fetch('schedule.json')
+    .then(response => response.json())
+    .then(data => {
+      // Wähle deinen Platzhalter aus
+      const anzeige = document.getElementById('mein-json-inhalt');
+      
+      // BEISPIEL: Wenn deine JSON ein einfacher Text oder ein Objekt ist,
+      // kannst du es so anzeigen:
+      anzeige.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+      
+      // ODER: Wenn deine JSON zum Beispiel eine Liste von Einträgen ist,
+      // kannst du mit data.eintrag durchschleifen (je nach deiner JSON-Struktur).
+    })
+    .catch(error => {
+      console.error('Fehler beim Laden der JSON-Datei:', error);
+    });
+</script>
+
+    </script>
+</body>
+</html>

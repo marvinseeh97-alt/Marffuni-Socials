@@ -1,0 +1,33 @@
+{
+    "weeks": [
+        {
+            "week": 1,
+            "startDate": "2026-09-14",
+            "endDate": "2026-09-20",
+            "dateRange": "14.09. – 20.09.2026",
+            "days": [
+               
+                { "day": "Freitag", "date": "2026-09-18", "game": "Fortnite 2v2 Realistics", "time": "21:30 Uhr", "status": "confirmed", "label": "Bestätigt" },
+                { "day": "Samstag", "date": "2026-09-19", "game": "In Planung", "time": "21:00 Uhr", "status": "Geplant", "label": "Geplant" },
+                { "day": "Sonntag", "date": "2026-09-20", "game": "In Planung", "time": "18:00 Uhr", "status": "Geplant", "label": "Geplant" }
+            ]
+        },
+        {
+            "week": 2,
+            "startDate": "2026-09-21",
+            "endDate": "2026-09-27",
+            "dateRange": "21.09. – 27.09.2026",
+            "days": [
+                { "day": "Montag", "date": "2026-09-28", "game": "Noch offen", "time": "—", "status": "tbd", "label": "Offen" },
+        { "day": "Dienstag", "date": "2026-09-29", "game": "Noch offen", "time": "—", "status": "tbd", "label": "Offen" },
+        { "day": "Mittwoch", "date": "2026-09-30", "game": "Noch offen", "time": "—", "status": "tbd", "label": "Offen" },
+        { "day": "Donnerstag", "date": "2026-10-01", "game": "Noch offen", "time": "—", "status": "tbd", "label": "Offen" },
+        { "day": "Freitag", "date": "2026-10-02", "game": "Noch offen", "time": "—", "status": "tbd", "label": "Offen" },
+        { "day": "Samstag", "date": "2026-10-03", "game": "Noch offen", "time": "—", "status": "tbd", "label": "Offen" },
+        { "day": "Sonntag", "date": "2026-10-04", "game": "Noch offen", "time": "—", "status": "tbd", "label": "Offen" }
+
+            ]
+        }
+    ]
+}
+

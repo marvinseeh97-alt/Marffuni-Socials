@@ -8,7 +8,7 @@
             "days": [
                
                 
-                { "day": "Samstag", "date": "2026-09-19", "game": "In Planung", "time": "21:00 Uhr", "status": "Geplant", "label": "Geplant" },
+           
                 { "day": "Sonntag", "date": "2026-09-20", "game": "In Planung", "time": "18:00 Uhr", "status": "Geplant", "label": "Geplant" }
             ]
         },
